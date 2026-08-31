@@ -1,0 +1,54 @@
+# Flutter
+.dart_tool/
+.packages
+build/
+*.iml
+.idea/
+*.gradle
+local.properties
+**/android/app/debug
+**/android/app/profile
+**/android/app/release
+
+# Node.js
+node_modules/
+.next/
+out/
+dist/
+*.tsbuildinfo
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+*.egg
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Docker
+*.log
+
+# Data
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep

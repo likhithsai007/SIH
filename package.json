@@ -1,0 +1,16 @@
+{
+  "name": "sih26090",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AI-powered Digital Craft Marketplace",
+  "scripts": {
+    "dev:web": "cd apps/web && npm run dev",
+    "dev:api": "cd apps/api && uvicorn src.app.main:app --reload",
+    "build:web": "cd apps/web && npm run build",
+    "lint:web": "cd apps/web && npm run lint",
+    "test": "echo \"No tests configured yet\""
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
