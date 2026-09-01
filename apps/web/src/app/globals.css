@@ -2,25 +2,59 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #1a1a2e;
+  --navy: #0f172a;
+  --navy-light: #1e293b;
+  --gold: #c5a55a;
+  --gold-light: #d4b96a;
+  --gold-muted: #e8d5a0;
+  --beige: #f5f0eb;
+  --beige-dark: #e8ddd4;
+  --cream: #faf8f5;
+  --warm-gray: #6b6560;
+  --warm-gray-light: #9a9590;
+  --border: #e5e0db;
+  --border-light: #f0ece8;
+  --success: #2d6a4f;
+  --error: #c53030;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-navy: var(--navy);
+  --color-navy-light: var(--navy-light);
+  --color-gold: var(--gold);
+  --color-gold-light: var(--gold-light);
+  --color-gold-muted: var(--gold-muted);
+  --color-beige: var(--beige);
+  --color-beige-dark: var(--beige-dark);
+  --color-cream: var(--cream);
+  --color-warm-gray: var(--warm-gray);
+  --color-warm-gray-light: var(--warm-gray-light);
+  --color-border: var(--border);
+  --color-border-light: var(--border-light);
+  --color-success: var(--success);
+  --color-error: var(--error);
+  --font-serif: var(--font-playfair), Georgia, serif;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+h1, h2, h3, h4, .font-serif {
+  font-family: var(--font-serif);
+}
+
+::selection {
+  background: var(--gold-muted);
+  color: var(--navy);
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
 }
