@@ -56,3 +56,8 @@ data/processed/*
 # freebuff
 .freebuff
 .freebuff/
+
+# Next.js agent docs
+AGENTS.md
+CLAUDE.md
+

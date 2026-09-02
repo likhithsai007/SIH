@@ -4,3 +4,7 @@ export { default as Card, CardHeader, CardContent } from "./Card";
 export { default as SearchInput } from "./SearchInput";
 export { default as StatCard } from "./StatCard";
 export { default as Footer } from "./Footer";
+export { ProductCard } from "./ProductCard";
+export { WishlistButton } from "./WishlistButton";
+export { TrustBadges } from "./TrustBadges";
+
