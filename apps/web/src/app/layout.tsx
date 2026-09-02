@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/stores/AuthContext";
+import { CartProvider } from "@/stores/CartContext";
+import { WishlistProvider } from "@/stores/WishlistContext";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -16,8 +18,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "AESTHETE — Crafted for the Discerning",
-  description: "Discover unique, handcrafted pieces by master artisans.",
+  title: "AESTHETE — Digital Craft Marketplace",
+  description: "Discover unique, handcrafted treasures directly from master artisans across India.",
 };
 
 export default function RootLayout({
@@ -29,9 +31,14 @@ export default function RootLayout({
     <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
       <body className="min-h-screen bg-background text-foreground font-sans antialiased">
         <AuthProvider>
-          {children}
+          <CartProvider>
+            <WishlistProvider>
+              {children}
+            </WishlistProvider>
+          </CartProvider>
         </AuthProvider>
       </body>
     </html>
   );
 }
+

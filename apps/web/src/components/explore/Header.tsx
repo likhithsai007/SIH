@@ -3,83 +3,179 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/stores/AuthContext";
+import { useCart } from "@/stores/CartContext";
+import { useWishlist } from "@/stores/WishlistContext";
 
 const navLinks = [
   { href: "/explore", label: "Gallery" },
   { href: "/artisans", label: "Artisans" },
   { href: "/collections", label: "Collections" },
-  { href: "/about", label: "About" },
+];
+
+const categoryPills = [
+  { name: "All Works", href: "/explore" },
+  { name: "Ceramics & Pottery", href: "/explore?category=Ceramics" },
+  { name: "Handloom Textiles", href: "/explore?category=Textiles" },
+  { name: "Woodworking", href: "/explore?category=Woodworking" },
+  { name: "Metal & Brass", href: "/explore?category=Metalwork" },
+  { name: "Regional Crafts", href: "/explore?category=Handicrafts" },
 ];
 
 export default function CustomerHeader() {
   const pathname = usePathname();
   const { user, logout } = useAuth();
+  const { items } = useCart();
+  const { wishlistCount } = useWishlist();
+
+  const totalCartCount = items.reduce((sum, item) => sum + item.cartQuantity, 0);
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-border-light">
-      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        {/* Logo */}
-        <Link href="/" className="font-serif text-2xl tracking-[0.15em] font-bold text-navy">
-          AESTHETE
-        </Link>
+    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-border-light shadow-sm">
+      {/* Top Value / Announcement Bar */}
+      <div className="bg-navy text-white text-[11px] font-medium py-1.5 px-4 tracking-wider flex items-center justify-between">
+        <div className="max-w-7xl mx-auto w-full flex items-center justify-between">
+          <span className="hidden sm:inline-block text-gold-muted font-serif italic">
+            Aesthete — The Curated Marketplace for Master Artisans
+          </span>
+          <div className="flex items-center gap-6 mx-auto sm:mx-0 text-white/90">
+            <span>✨ 100% Certified Authentic Craft</span>
+            <span className="hidden md:inline">· Direct Maker Compensation</span>
+            <span className="hidden lg:inline">· Handcrafted in India</span>
+          </div>
+          <div className="hidden sm:flex items-center gap-4 text-white/70">
+            <Link href="/login?role=artisan" className="hover:text-gold transition-colors text-[11px]">
+              Artisan Portal →
+            </Link>
+          </div>
+        </div>
+      </div>
 
-        {/* Nav */}
-        <nav className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => {
-            const isActive = pathname === link.href || (link.href === "/explore" && pathname?.startsWith("/explore"));
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`text-sm tracking-wide transition-colors ${
-                  isActive
-                    ? "text-navy font-medium border-b border-navy pb-0.5"
-                    : "text-warm-gray hover:text-navy"
-                }`}
-              >
-                {link.label}
-              </Link>
-            );
-          })}
-        </nav>
+      {/* Main Navigation Bar */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between gap-4">
+        {/* Brand Logo */}
+        <div className="flex items-center gap-8">
+          <Link href="/" className="font-serif text-2xl tracking-[0.18em] font-bold text-navy hover:text-gold transition-colors">
+            AESTHETE
+          </Link>
 
-        {/* Actions */}
-        <div className="flex items-center gap-4">
+          {/* Primary Nav Links */}
+          <nav className="hidden lg:flex items-center gap-7">
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href || (link.href === "/explore" && pathname?.startsWith("/explore"));
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`text-xs uppercase tracking-widest transition-all pb-1 ${
+                    isActive
+                      ? "text-navy font-bold border-b-2 border-gold"
+                      : "text-warm-gray hover:text-navy font-medium"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
+          </nav>
+        </div>
+
+        {/* Search Bar Shortcut */}
+        <div className="hidden md:flex flex-1 max-w-md mx-6">
+          <Link
+            href="/explore"
+            className="w-full flex items-center gap-2.5 px-3.5 py-2 bg-cream/70 hover:bg-cream border border-border rounded-full text-xs text-warm-gray transition-colors shadow-inner"
+          >
+            <svg className="w-4 h-4 text-warm-gray" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <span className="truncate">Search pottery, handloom silk, woodwork, brass...</span>
+          </Link>
+        </div>
+
+        {/* User Actions (Wishlist, Cart, Profile) */}
+        <div className="flex items-center gap-3 sm:gap-4">
+          {/* Wishlist Link with Live Counter */}
+          <Link
+            href="/wishlist"
+            className="p-2 text-warm-gray hover:text-navy hover:bg-cream rounded-full transition-colors relative"
+            title="Saved Items"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+            </svg>
+            {wishlistCount > 0 && (
+              <span className="absolute 0 top-1 right-1 w-4 h-4 bg-rose-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-sm">
+                {wishlistCount}
+              </span>
+            )}
+          </Link>
+
+          {/* Cart Link with Live Counter */}
+          <Link
+            href="/cart"
+            className="p-2 text-warm-gray hover:text-navy hover:bg-cream rounded-full transition-colors relative"
+            title="Your Bag"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+            </svg>
+            {totalCartCount > 0 && (
+              <span className="absolute top-1 right-1 w-4 h-4 bg-navy text-gold text-[10px] font-bold rounded-full flex items-center justify-center shadow-sm border border-gold">
+                {totalCartCount}
+              </span>
+            )}
+          </Link>
+
+          {/* User Account / Artisan Switcher */}
           {user?.role === "artisan" ? (
-            <Link href="/artisan/dashboard" className="px-4 py-2 bg-navy text-white text-xs rounded-full hover:bg-navy-light transition-colors">
+            <Link
+              href="/artisan/dashboard"
+              className="px-3 py-1.5 bg-navy text-gold text-xs font-semibold rounded-lg hover:bg-navy-light transition-colors border border-gold/40 shadow-sm"
+            >
               Artisan Studio
             </Link>
           ) : user ? (
-            <div className="flex items-center gap-4">
-              <Link href="/orders" className="text-xs font-medium text-navy hover:text-gold transition-colors">
-                My Orders
-              </Link>
-              <Link href="/cart" className="text-warm-gray hover:text-navy transition-colors relative" title="View Cart">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                </svg>
+            <div className="flex items-center gap-2">
+              <Link
+                href="/orders"
+                className="text-xs font-semibold text-navy hover:text-gold px-2.5 py-1.5 rounded-md hover:bg-cream transition-colors"
+              >
+                Orders
               </Link>
               <button
                 onClick={() => logout()}
-                className="text-xs text-red-600 hover:text-red-800 transition-colors px-2 py-1 border border-red-200 rounded hover:bg-red-50"
+                className="text-xs text-warm-gray hover:text-rose-600 transition-colors px-2 py-1"
+                title="Log Out"
               >
                 Log Out
               </button>
             </div>
           ) : (
-            <>
-              <Link href="/login?role=customer" className="text-warm-gray hover:text-navy transition-colors" title="Sign In">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
-              </Link>
-              <Link href="/cart" className="text-warm-gray hover:text-navy transition-colors relative" title="View Cart">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                </svg>
-              </Link>
-            </>
+            <Link
+              href="/login?role=customer"
+              className="px-3.5 py-1.5 bg-navy text-white text-xs font-medium rounded-lg hover:bg-navy-light transition-colors shadow-sm"
+            >
+              Sign In
+            </Link>
           )}
+        </div>
+      </div>
+
+      {/* Category Pills Strip */}
+      <div className="border-t border-border-light bg-cream/40 px-4 sm:px-6 py-2 overflow-x-auto no-scrollbar">
+        <div className="max-w-7xl mx-auto flex items-center gap-2 min-w-max text-xs">
+          <span className="text-[11px] font-bold uppercase tracking-wider text-warm-gray-light mr-1">
+            Browse:
+          </span>
+          {categoryPills.map((pill) => (
+            <Link
+              key={pill.name}
+              href={pill.href}
+              className="px-3 py-1 rounded-full bg-white border border-border/80 text-warm-gray hover:text-navy hover:border-gold hover:bg-white text-xs font-medium transition-colors shadow-2xs"
+            >
+              {pill.name}
+            </Link>
+          ))}
         </div>
       </div>
     </header>
